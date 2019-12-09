@@ -7,11 +7,11 @@ import com.hartwig.pipeline.calling.SubStageTest;
 
 import org.junit.Test;
 
-public class SageFiltersAndAnnotationsTest extends SubStageTest {
+public class SageHotspotFiltersAndAnnotationsTest extends SubStageTest {
 
     @Override
     public SubStage createVictim() {
-        return new SageFiltersAndAnnotations("tumor");
+        return new SageHotspotFiltersAndAnnotations("tumor");
     }
 
     @Override

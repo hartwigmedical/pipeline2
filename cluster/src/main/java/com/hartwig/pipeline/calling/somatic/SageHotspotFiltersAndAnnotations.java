@@ -9,11 +9,11 @@ import com.hartwig.pipeline.execution.vm.BashCommand;
 import com.hartwig.pipeline.execution.vm.OutputFile;
 import com.hartwig.pipeline.execution.vm.unix.PipeCommands;
 
-class SageFiltersAndAnnotations extends SubStage {
+class SageHotspotFiltersAndAnnotations extends SubStage {
 
     private final String tumorName;
 
-    SageFiltersAndAnnotations(final String tumorName) {
+    SageHotspotFiltersAndAnnotations(final String tumorName) {
         super("sage.hotspots.filtered", OutputFile.GZIPPED_VCF);
         this.tumorName = tumorName;
     }
