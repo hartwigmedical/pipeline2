@@ -5,6 +5,6 @@ import com.hartwig.pipeline.tools.Versions;
 
 class SageCommand extends JavaClassCommand {
     SageCommand(final String mainClass, final String... arguments) {
-        super("sage", Versions.SAGE, "sage.jar", mainClass, "8G", arguments);
+        super("sage", Versions.SAGE, "sage.jar", mainClass, "128G", arguments);
     }
 }

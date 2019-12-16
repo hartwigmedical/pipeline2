@@ -29,6 +29,8 @@ public interface Arguments extends CommonArguments {
 
     boolean runSomaticCaller();
 
+    boolean runSageSomaticCaller();
+
     boolean runStructuralCaller();
 
     boolean runTertiary();
@@ -118,6 +120,7 @@ public interface Arguments extends CommonArguments {
                     .runSnpGenotyper(true)
                     .runGermlineCaller(true)
                     .runSomaticCaller(true)
+                    .runSageSomaticCaller(false)
                     .runStructuralCaller(true)
                     .runTertiary(true)
                     .shallow(false)
@@ -148,6 +151,7 @@ public interface Arguments extends CommonArguments {
                     .runSnpGenotyper(true)
                     .runGermlineCaller(true)
                     .runSomaticCaller(true)
+                    .runSageSomaticCaller(false)
                     .runTertiary(true)
                     .runStructuralCaller(true)
                     .shallow(false)
@@ -184,6 +188,7 @@ public interface Arguments extends CommonArguments {
                     .runSnpGenotyper(true)
                     .runGermlineCaller(true)
                     .runSomaticCaller(true)
+                    .runSageSomaticCaller(false)
                     .runTertiary(true)
                     .runStructuralCaller(true)
                     .shallow(false)

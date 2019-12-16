@@ -1,6 +1,6 @@
 package com.hartwig.pipeline.calling.somatic;
 
-class SageHotspotApplicationCommand extends SageCommand {
+class SageHotspotApplicationCommand extends SageHotspotCommand {
     SageHotspotApplicationCommand(final String tumorSampleName, final String tumorBamPath, final String referenceSampleName,
             final String referenceBamPath, final String knownHotspots, final String codingRegions, final String referenceGenomePath,
             final String outputVcf) {

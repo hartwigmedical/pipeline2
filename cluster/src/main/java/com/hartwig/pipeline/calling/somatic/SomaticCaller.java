@@ -40,9 +40,12 @@ public class SomaticCaller extends TertiaryStage<SomaticCallerOutput> {
 
     private OutputFile outputFile;
     private OutputFile sageOutputFile;
+    private final boolean runSageSomaticCaller;
 
-    public SomaticCaller(final AlignmentPair alignmentPair) {
+    public SomaticCaller(final AlignmentPair alignmentPair, boolean runSageSomaticCaller)
+    {
         super(alignmentPair);
+        this.runSageSomaticCaller = runSageSomaticCaller;
     }
 
     @Override
@@ -52,7 +55,14 @@ public class SomaticCaller extends TertiaryStage<SomaticCallerOutput> {
 
     @Override
     public List<BashCommand> commands(final SomaticRunMetadata metadata) {
+        if(runSageSomaticCaller)
+            return createSageCommands(metadata);
+        else
+            return createStrelkaCommands(metadata);
+    }
 
+    private List<BashCommand> createStrelkaCommands(final SomaticRunMetadata metadata)
+    {
         List<BashCommand> commands = Lists.newArrayList();
 
         String tumorBamPath = getTumorBamDownload().getLocalTargetPath();
@@ -60,6 +70,7 @@ public class SomaticCaller extends TertiaryStage<SomaticCallerOutput> {
         String referenceGenomePath = Resource.REFERENCE_GENOME_FASTA;
         String tumorSampleName = metadata.tumor().sampleName();
         String referenceSampleName = metadata.reference().sampleName();
+
         String knownHotspotsTsv = Resource.of(SAGE, "KnownHotspots.tsv");
         SubStageInputOutput sageOutput = new SageHotspotsApplication(knownHotspotsTsv,
                 Resource.of(SAGE, "CodingRegions.bed"),
@@ -95,6 +106,37 @@ public class SomaticCaller extends TertiaryStage<SomaticCallerOutput> {
         commands.addAll(mergedOutput.bash());
 
         outputFile = mergedOutput.outputFile();
+        sageOutputFile = sageOutput.outputFile();
+        return commands;
+    }
+
+    private List<BashCommand> createSageCommands(final SomaticRunMetadata metadata)
+    {
+        List<BashCommand> commands = Lists.newArrayList();
+
+        String tumorBamPath = getTumorBamDownload().getLocalTargetPath();
+        String referenceBamPath = getReferenceBamDownload().getLocalTargetPath();
+        String referenceGenomePath = Resource.REFERENCE_GENOME_FASTA;
+        String tumorSampleName = metadata.tumor().sampleName();
+        String referenceSampleName = metadata.reference().sampleName();
+
+        String knownHotspotsTsv = Resource.of(SAGE, "KnownHotspots.tsv");
+
+        SubStageInputOutput sageOutput = new SageHotspotsApplication(knownHotspotsTsv,
+                Resource.of(SAGE, "CodingRegions.bed"),
+                referenceGenomePath,
+                tumorBamPath,
+                referenceBamPath,
+                tumorSampleName,
+                referenceSampleName).andThen(new SageHotspotFiltersAndAnnotations(tumorSampleName))
+                .andThen(new SageHotspotPonAnnotation(Resource.of(SAGE, "SAGE_PON.vcf.gz")))
+                .andThen(new SageHotspotPonFilter())
+                .apply(SubStageInputOutput.empty(tumorSampleName));
+
+        commands.addAll(sageOutput.bash());
+
+        commands.add(new UnzipToDirectoryCommand(VmDirectories.RESOURCES, Resource.SNPEFF_DB));
+
         sageOutputFile = sageOutput.outputFile();
         return commands;
     }

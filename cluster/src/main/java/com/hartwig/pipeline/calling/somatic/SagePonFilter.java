@@ -8,9 +8,9 @@ import com.hartwig.pipeline.calling.command.TabixCommand;
 import com.hartwig.pipeline.execution.vm.BashCommand;
 import com.hartwig.pipeline.execution.vm.OutputFile;
 
-class SageHotspotPonFilter extends SubStage {
-    SageHotspotPonFilter() {
-        super("sage.hotspot.pon.filter", OutputFile.GZIPPED_VCF);
+class SagePonFilter extends SubStage {
+    SagePonFilter() {
+        super("sage.pon.filter", OutputFile.GZIPPED_VCF);
     }
 
     @Override
