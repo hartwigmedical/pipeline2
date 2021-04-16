@@ -38,6 +38,7 @@ import com.hartwig.pipeline.tertiary.cobalt.Cobalt;
 import com.hartwig.pipeline.tertiary.cobalt.CobaltOutput;
 import com.hartwig.pipeline.tertiary.healthcheck.HealthCheckOutput;
 import com.hartwig.pipeline.tertiary.healthcheck.HealthChecker;
+import com.hartwig.pipeline.tertiary.lilac.LilacOutput;
 import com.hartwig.pipeline.tertiary.linx.Linx;
 import com.hartwig.pipeline.tertiary.linx.LinxOutput;
 import com.hartwig.pipeline.tertiary.linx.LinxOutputLocations;
@@ -189,6 +190,12 @@ public class TestInputs {
                 .build();
     }
 
+    public static LilacOutput lilacOutput() {
+        return LilacOutput.builder()
+                .status(PipelineStatus.SKIPPED)
+                .build();
+    }
+
     public static SageOutput sageSomaticOutput() {
         return SageOutput.builder(SageSomaticCaller.NAMESPACE)
                 .status(PipelineStatus.SUCCESS)
@@ -254,6 +261,7 @@ public class TestInputs {
                         .qcFile(gsLocation(somaticBucket(Purple.NAMESPACE), TUMOR_SAMPLE + Purple.PURPLE_QC))
                         .somaticDriverCatalog(gsLocation(somaticBucket(Purple.NAMESPACE), TUMOR_SAMPLE + Purple.PURPLE_SOMATIC_DRIVER_CATALOG))
                         .germlineDriverCatalog(gsLocation(somaticBucket(Purple.NAMESPACE), TUMOR_SAMPLE + Purple.PURPLE_GERMLINE_DRIVER_CATALOG))
+                        .geneCopyNumberTsv(gsLocation(somaticBucket(Purple.NAMESPACE), TUMOR_SAMPLE + Purple.PURPLE_GENE_COPY_NUMBER_TSV))
                         .build())
                 .build();
     }
